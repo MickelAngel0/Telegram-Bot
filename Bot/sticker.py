@@ -21,5 +21,5 @@ def sticker(update: Update, context: CallbackContext):
 
     context.bot.send_sticker(
         chat_id=update.effective_chat.id,
-        sticker=update.message.sticker.file_id,
+        sticker=update.effective_message.sticker.file_id,
     )

@@ -5,7 +5,7 @@ from telegram.files.inputmedia import InputMediaPhoto
 
 def photo(update: Update, context: CallbackContext):
 
-    print(update)
+    # print(update)
 
     if update.edited_message:
         print("if part")
@@ -22,21 +22,21 @@ def photo(update: Update, context: CallbackContext):
 
         context.bot.edit_message_media(
             media=InputMediaPhoto(
-                media=update.edited_message.photo[-1].file_id,
-                caption=update.edited_message.caption,
-                caption_entities=update.edited_message.caption_entities,
+                media=update.effective_message.photo[-1].file_id,
+                caption=update.effective_message.caption,
+                caption_entities=update.effective_message.caption_entities,
                 # filename=update.edited_message.photo[-1],
             ),
-            chat_id=update.edited_message.chat_id,
-            message_id=update.edited_message.message_id + 1,
+            chat_id=update.effective_chat.id,
+            message_id=update.effective_message.message_id + 1,
         )
 
         # context.bot.editMessageCaption
     else:
         context.bot.send_photo(
             chat_id=update.effective_chat.id,
-            photo=update.message.photo[-1].file_id,
-            caption=update.message.caption,
+            photo=update.effective_message.photo[-1].file_id,
+            caption=update.effective_message.caption,
             # filename= update.message.photo[-1],
-            caption_entities=update.message.caption_entities,
+            caption_entities=update.effective_message.caption_entities,
         )

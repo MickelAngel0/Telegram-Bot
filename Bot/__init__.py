@@ -9,6 +9,7 @@ from .animation import animation
 from .audio import audio
 from .document import document
 from .photo import photo
+from .poll import poll
 from .sticker import sticker
 from .text import text
 from .video import video
@@ -20,4 +21,5 @@ dispatcher.add_handler(MessageHandler(Filters.video, video))
 dispatcher.add_handler(MessageHandler(Filters.audio, audio))
 dispatcher.add_handler(MessageHandler(Filters.sticker, sticker))
 dispatcher.add_handler(MessageHandler(Filters.animation, animation))
+dispatcher.add_handler(MessageHandler(Filters.poll, poll))
 dispatcher.add_handler(MessageHandler(Filters.document, document))
