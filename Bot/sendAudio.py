@@ -3,7 +3,9 @@ from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaAudio
 
 
-def audio(update: Update, context: CallbackContext):
+def sendAudio(update: Update, context: CallbackContext):
+    print('AUDIO:')
+
     if update.edited_message:
         context.bot.edit_message_media(
             media=InputMediaAudio(

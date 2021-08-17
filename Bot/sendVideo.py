@@ -3,9 +3,11 @@ from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaVideo
 
 
-def video(update: Update, context: CallbackContext):
+def sendVideo(update: Update, context: CallbackContext):
+    print("VIDEO:")
+
     if update.edited_message:
-        print("if part")
+        # print("if part")
 
         context.bot.edit_message_media(
             media=InputMediaVideo(

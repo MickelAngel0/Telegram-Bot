@@ -3,6 +3,7 @@ from telegram.ext import CallbackContext
 
 
 def poll(update: Update, context: CallbackContext):
+    print('POLL:')
 
     # if update.edited_message:
     #     print("if part")

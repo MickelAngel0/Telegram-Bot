@@ -3,9 +3,11 @@ from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaDocument
 
 
-def document(update: Update, context: CallbackContext):
+def sendDocument(update: Update, context: CallbackContext):
+    print('DOCUMENT:')
+
     if update.edited_message:
-        print("if part")
+        # print("if part")
 
         context.bot.edit_message_media(
             media=InputMediaDocument(

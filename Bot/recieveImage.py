@@ -3,12 +3,12 @@ from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaPhoto
 
 
-def photo(update: Update, context: CallbackContext):
+def recieveImage(update: Update, context: CallbackContext):
 
-    # print(update)
+    print("PHOTO:")
 
     if update.edited_message:
-        print("if part")
+        # print("if part")
 
         # Works
         # context.bot.edit_message_caption(
