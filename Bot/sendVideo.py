@@ -1,10 +1,11 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaVideo
+import logging
 
 
 def sendVideo(update: Update, context: CallbackContext):
-    print("VIDEO:")
+    logging.info("SENDING VIDEO:")
 
     if update.edited_message:
         # print("if part")

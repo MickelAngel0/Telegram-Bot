@@ -1,9 +1,10 @@
 from telegram import Update
 from telegram.ext import CallbackContext
+import logging
 
 
 def sendSticker(update: Update, context: CallbackContext):
-    print('STICKER:')
+    logging.info('SENDING STICKER:')
     
     # if update.edited_message:
     #     print("if part")

@@ -1,10 +1,11 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaAudio
+import logging
 
 
 def sendAudio(update: Update, context: CallbackContext):
-    print('AUDIO:')
+    logging.info('SENDING AUDIO:')
 
     if update.edited_message:
         context.bot.edit_message_media(

@@ -3,11 +3,12 @@ from telegram import Update, bot
 import telegram
 from telegram.ext import CallbackContext
 from Bot import botData
+import logging
 
 
 def recieveTextOrEmoji(update: Update, context: CallbackContext):
 
-    print("TEXT OR EMOJI:")
+    logging.info("RECIEVED TEXT OR EMOJI:")
 
     if update.edited_message:
         print("EDIT:")

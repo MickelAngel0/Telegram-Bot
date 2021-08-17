@@ -1,10 +1,11 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaDocument
+import logging
 
 
 def recieveDocument(update: Update, context: CallbackContext):
-    print("DOCUMENT:")
+    logging.info("RECIEVED DOCUMENT:")
 
     if update.edited_message:
         # print("if part")

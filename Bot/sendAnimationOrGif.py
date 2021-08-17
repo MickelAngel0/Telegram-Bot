@@ -1,10 +1,11 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaAnimation
+import logging
 
 
 def sendAnimationOrGif(update: Update, context: CallbackContext):
-    print("ANIMATION OR GIF:")
+    logging.info("SENDING ANIMATION OR GIF:")
 
     if update.edited_message:
         context.bot.edit_message_media(

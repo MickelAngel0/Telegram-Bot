@@ -1,11 +1,12 @@
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaPhoto
+import logging
 
 
 def recieveImage(update: Update, context: CallbackContext):
 
-    print("PHOTO:")
+    logging.info("RECIEVED IMAGE:")
 
     if update.edited_message:
         # print("if part")
