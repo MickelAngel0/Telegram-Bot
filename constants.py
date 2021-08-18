@@ -2,16 +2,16 @@ BOT_TOKEN: str = "1856554532:AAHYWw0buQOHThRf4XB2l54YTqmc5TWeJgk"
 
 # class AdminData:
 
-BOTDATAFILENAME: str = "botData.pickle"
+BOTDATA_FILENAME: str = "botData.pickle"
 
-DEFAULTSCHEDULETIME: int = 6  # 24Hr Format
+DEFAULT_SCHEDULE_TIME: int = 6  # 24Hr Format
 
 CHANNELS: str = "channels"
 SUBSCRIBERS: str = "subscribers"
 SUPERGROUPS: str = "superGroups"
-MESSAGESPOSTED: str = "messagesPosted"
-MESSAGESSCHEDULED: str = "messagesScheduled"
-SCHEDULETIME: str = "scheduleTime"
+MESSAGES_POSTED: str = "messagesPosted"
+MESSAGES_SCHEDULED: str = "messagesScheduled"
+SCHEDULE_TIME: str = "scheduleTime"
 
 
 MESSAGETYPETEXT: str = "text"

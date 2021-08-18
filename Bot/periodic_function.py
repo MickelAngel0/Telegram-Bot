@@ -29,33 +29,3 @@ def periodic(context: CallbackContext):
             == MESSAGETYPETEXT
         ):
             sendTextOrEmoji(context=context, message=telegramMessage, userId=1530597878)
-
-        # for chatId in botData.botData[1530597878][CHANNELS]:
-        #     print("CHANNEL CHATID:", chatId)
-
-        #     resultMessage = context.bot.send_message(
-        #         chat_id=chatId,
-        #         text=telegramMessage.text,
-        #         # disable_web_page_preview=update.message.text,
-        #         entities=telegramMessage.entities,
-        #     )
-        #     messageDict[chatId] = resultMessage.message_id
-
-        # for chatId in botData.botData[1530597878][SUPERGROUPS]:
-        #     print("SUPERGROUP CHATID:", chatId)
-
-        #     resultMessage = context.bot.send_message(
-        #         chat_id=chatId,
-        #         text=telegramMessage.text,
-        #         # disable_web_page_preview=update.message.text,
-        #         entities=telegramMessage.entities,
-        #     )
-        #     messageDict[chatId] = resultMessage.message_id
-
-        # botData.botData[1530597878][MESSAGESPOSTED] = messageDict
-
-        # botData.removeFirstMessageFromSceduledMessages()
-
-        # # messageIds[update.effective_message.message_id] = messageDict
-        # print("BOTDATA:", botData.botData)
-        # botData.writeDataToFile()
