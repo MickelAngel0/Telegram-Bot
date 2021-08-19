@@ -1,25 +1,24 @@
-from datetime import datetime
-from botData import BotData
 from constants import BOT_TOKEN
-from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
+from Models import Admin
+from telegram.ext import Updater
+from telegram.ext import MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 
-botData = BotData()
+
+admin = Admin()
 
 updater = Updater(BOT_TOKEN)
 dispatcher = updater.dispatcher
 jobQueue = updater.job_queue
 
-from .command import start
-from .animation import animationOrGif
-from .audio import audio
-from .document import document
-from .photo import photo
-from .poll import poll
-from .sticker import sticker
-from .text import textOrEmoji
-from .video import video
-
-from .periodic_function import periodic
+from .commands import *
+from .callbackQuery import callbackQuery
+from .recieveAnimationOrGif import recieveAnimationOrGif
+from .recieveAudio import recieveAudio
+from .recieveDocument import recieveDocument
+from .recieveImage import recieveImage
+from .recieveSticker import recieveSticker
+from .recieveTextOrEmoji import recieveTextOrEmoji
+from .recieveVideo import recieveVideo
 
 
 # dispatcher.add_handler(
@@ -31,12 +30,16 @@ from .periodic_function import periodic
 # jobQueue.run_daily(periodic, datetime.utcnow())
 
 dispatcher.add_handler(CommandHandler("start", start))
+dispatcher.add_handler(CommandHandler("help", start))
+dispatcher.add_handler(CommandHandler("set", setDailyPostTime))
+dispatcher.add_handler(CommandHandler("unset", unsetDailyPostTime))
+dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 
-dispatcher.add_handler(MessageHandler(Filters.text, textOrEmoji))
-dispatcher.add_handler(MessageHandler(Filters.photo, photo))
-dispatcher.add_handler(MessageHandler(Filters.video, video))
-dispatcher.add_handler(MessageHandler(Filters.audio, audio))
-dispatcher.add_handler(MessageHandler(Filters.sticker, sticker))
-dispatcher.add_handler(MessageHandler(Filters.animation, animationOrGif))
-dispatcher.add_handler(MessageHandler(Filters.poll, poll))
-dispatcher.add_handler(MessageHandler(Filters.document, document))
+dispatcher.add_handler(MessageHandler(Filters.text, recieveTextOrEmoji))
+dispatcher.add_handler(MessageHandler(Filters.photo, recieveImage))
+dispatcher.add_handler(MessageHandler(Filters.video, recieveVideo))
+dispatcher.add_handler(MessageHandler(Filters.audio, recieveAudio))
+dispatcher.add_handler(MessageHandler(Filters.sticker, recieveSticker))
+dispatcher.add_handler(MessageHandler(Filters.animation, recieveAnimationOrGif))
+# dispatcher.add_handler(MessageHandler(Filters.poll, poll))
+dispatcher.add_handler(MessageHandler(Filters.document, recieveDocument))

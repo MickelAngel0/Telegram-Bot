@@ -1,130 +1,49 @@
-from constants import CHANNELS, MESSAGESPOSTED, SUBSCRIBERS, SUPERGROUPS
-from telegram import Update, bot
-import telegram
+from telegram import Update
 from telegram.ext import CallbackContext
-from Bot import botData
-import logging
+from Bot import admin
 
 
-def recieveTextOrEmoji(update: Update, context: CallbackContext):
+def recieveTextOrEmoji(update: Update, context: CallbackContext) -> None:
+    """Add a job to the queue."""
+    chat_id = update.effective_message.chat_id
 
-    logging.info("RECIEVED TEXT OR EMOJI:")
+    try:
 
-    if update.edited_message:
-        print("EDIT:")
+        if update.edited_message:
+            print("edited msg")
+            print(update.edited_message.message_id)
 
-        botData.editScheduledMessage(
-            userId=update.effective_chat.id,
-            messageId=update.effective_message.message_id,
-            newMessage=update.effective_message.to_dict(),
-        )
+            if any(
+                item.message_id == update.edited_message.message_id
+                for item in admin.scheduledMessages
+            ):
+                print("in sch msgs")
 
-        # for chatId in botData.botData[update.effective_chat.id][CHANNELS]:
-        #     context.bot.edit_message_text(
-        #         text=update.effective_message.text,
-        #         chat_id=chatId,
-        #         message_id=botData.botData[update.effective_chat.id][MESSAGESPOSTED][
-        #             chatId
-        #         ],
-        #         entities=update.effective_message.entities,
-        #     )
+                for index, item in enumerate(admin.scheduledMessages):
+                    if item.message_id == update.edited_message.message_id:
+                        admin.scheduledMessages[index] = update.edited_message
+                        break
 
-        # for chatId in botData.botData[update.effective_chat.id][SUPERGROUPS]:
-        #     context.bot.edit_message_text(
-        #         text=update.effective_message.text,
-        #         chat_id=chatId,
-        #         message_id=botData.botData[update.effective_chat.id][MESSAGESPOSTED][
-        #             chatId
-        #         ],
-        #         entities=update.effective_message.entities,
-        #     )
-    else:
-        print("SEND:")
+            elif update.edited_message.message_id in admin.sentMessages:
 
-        # botData.saveMessageToPickle(update.effective_message.to_dict())
-        botData.scheduleMessage(
-            userId=update.effective_chat.id,
-            messageId=update.effective_message.message_id,
-            message=update.effective_message.to_dict(),
-        )
+                context.bot.edit_message_text(
+                    text=update.edited_message.text,
+                    chat_id=chat_id,
+                    message_id=admin.sentMessages[update.edited_message.message_id],
+                    entities=update.edited_message.entities,
+                )
 
-        # messageDict = {}
+        else:
 
-        # for chatId in botData.botData[update.effective_chat.id][CHANNELS]:
-        #     print("CHANNEL CHATID:", chatId)
-        #     # print(update.effective_chat.type == telegram.Chat.CHANNEL)
+            admin.scheduledMessages.append(update.message)
+            print("added new msg to sch ", update.message.message_id)
+            job = context.job_queue.get_jobs_by_name(str(chat_id))[0]
 
-        #     resultMessage = context.bot.send_message(
-        #         chat_id=chatId,
-        #         text=update.effective_message.text,
-        #         # disable_web_page_preview=update.message.text,
-        #         entities=update.effective_message.entities,
-        #     )
-        #     messageDict[chatId] = resultMessage.message_id
+            if job.enabled != True:
+                job.enabled = True
 
-        # for chatId in botData.botData[update.effective_chat.id][SUPERGROUPS]:
-        #     print("SUPERGROUP CHATID:", chatId)
-        #     # print(update.effective_chat.type == telegram.Chat.SUPERGROUP)
+            text = "Text successfully added!"
+            update.message.reply_text(text)
 
-        #     resultMessage = context.bot.send_message(
-        #         chat_id=chatId,
-        #         text=update.effective_message.text,
-        #         # disable_web_page_preview=update.message.text,
-        #         entities=update.effective_message.entities,
-        #     )
-        #     messageDict[chatId] = resultMessage.message_id
-
-        # botData.botData[update.effective_chat.id][MESSAGESPOSTED] = messageDict
-        # # messageIds[update.effective_message.message_id] = messageDict
-        # print("BOTDATA:", botData.botData)
-        # botData.writeDataToFile()
-
-
-def sendTextOrEmoji(context: CallbackContext, message: telegram.Message, userId: int):
-    print("SEND TEXT OR EMOJI:")
-
-    messageDict = {}
-
-    for chatId in botData.botData[userId][CHANNELS]:
-        # print("CHANNEL CHATID:", chatId)
-
-        resultMessage = context.bot.send_message(
-            chat_id=chatId,
-            text=message.text,
-            # disable_web_page_preview=update.message.text,
-            entities=message.entities,
-        )
-        messageDict[chatId] = resultMessage.message_id
-
-    for chatId in botData.botData[userId][SUPERGROUPS]:
-        # print("SUPERGROUP CHATID:", chatId)
-
-        resultMessage = context.bot.send_message(
-            chat_id=chatId,
-            text=message.text,
-            # disable_web_page_preview=update.message.text,
-            entities=message.entities,
-        )
-        messageDict[chatId] = resultMessage.message_id
-
-    for chatId in botData.botData[userId][SUBSCRIBERS]:
-        # print("SUPERGROUP CHATID:", chatId)
-
-        resultMessage = context.bot.send_message(
-            chat_id=chatId,
-            text=message.text,
-            # disable_web_page_preview=update.message.text,
-            entities=message.entities,
-        )
-        messageDict[chatId] = resultMessage.message_id
-
-    botData.addPostedMessages(
-        userId=userId,
-        userMessageId=message.message_id,
-        postedMessageIds=messageDict,
-    )
-
-    # botData.botData[update.effective_chat.id][MESSAGESPOSTED] = messageDict
-    # # messageIds[update.effective_message.message_id] = messageDict
-    # print("BOTDATA:", botData.botData)
-    botData.writeDataToFile()
+    except (IndexError, ValueError):
+        update.message.reply_text("MSG: No Job present, please set time first")
