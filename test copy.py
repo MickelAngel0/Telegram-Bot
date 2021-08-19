@@ -58,7 +58,7 @@ class Admin:
     def __init__(self) -> None:
         self.chatId = None
         self.scheduledMessages: list[telegram.Message] = []
-        self.dueTime = 15
+        self.dueTime = 15 # seconds
         self.sentMessages: dict[int, int] = {}
 
 
@@ -97,10 +97,7 @@ def sendText(context: CallbackContext) -> None:
                         # ),
                     ]
                 ]
-            )
-            # reply_markup=ReplyKeyboardMarkup(
-            #     keyboard=[[KeyboardButton(text="Delete"), KeyboardButton(text="Edit")]],
-            # ),
+            ),
         )
     else:
 
