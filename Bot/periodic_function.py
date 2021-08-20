@@ -1,13 +1,6 @@
-from telegram import message
-from Bot.text import sendTextOrEmoji
+from Bot.sendTextOrEmoji import sendTextOrEmoji
 import telegram
-from constants import (
-    CHANNELS,
-    MESSAGESPOSTED,
-    MESSAGESSCHEDULED,
-    MESSAGETYPETEXT,
-    SUPERGROUPS,
-)
+from constants import MESSAGESSCHEDULED, MESSAGETYPETEXT
 from telegram.ext.callbackcontext import CallbackContext
 from Bot import botData
 

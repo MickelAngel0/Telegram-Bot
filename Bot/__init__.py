@@ -1,10 +1,13 @@
+from Models.Admin import Admin
 from constants import BOT_TOKEN
-from Models import Admin
 from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 
 
-admin = Admin()
+admin: Admin = Admin()
+
+admin.superGroups.append(-1001410809020)
+admin.sentMessages[-1001410809020] = {}
 
 updater = Updater(BOT_TOKEN)
 dispatcher = updater.dispatcher
@@ -31,8 +34,9 @@ from .recieveVideo import recieveVideo
 
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", start))
-dispatcher.add_handler(CommandHandler("set", setDailyPostTime))
-dispatcher.add_handler(CommandHandler("unset", unsetDailyPostTime))
+dispatcher.add_handler(CommandHandler("text", setPostTimeText))
+dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
+dispatcher.add_handler(CommandHandler("reset", resetDailyPostTime))
 dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 
 dispatcher.add_handler(MessageHandler(Filters.text, recieveTextOrEmoji))

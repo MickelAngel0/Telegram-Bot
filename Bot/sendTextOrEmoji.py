@@ -1,39 +1,47 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+import logging
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
 from Bot import admin
 
 
-def sendTextOrEmoji(update: Update, context: CallbackContext) -> None:
-    """Send the alarm message."""
-    job = context.job
-    if len(admin.scheduledMessages) != 0:
-        scheduledMsg = admin.scheduledMessages.pop(0)
-        result = context.bot.send_message(scheduledMsg.chat_id, text=scheduledMsg.text)
+def sendTextOrEmoji(context: CallbackContext) -> None:
+    logging.info("SENDING TEXT/YOUTUBE LINK:")
 
-        print("RES after sending in channels", result.message_id)
-        admin.sentMessages[scheduledMsg.message_id] = result.message_id
+    if len(admin.scheduledYoutubeLinks) != 0:
+        scheduledYoutubeLink = admin.scheduledYoutubeLinks.pop(0)
+
+        logging.info("SuperGrps:")
+
+        for superGrpChatId in admin.superGroups:
+            result = context.bot.send_message(
+                chat_id=superGrpChatId,
+                text=scheduledYoutubeLink.text,
+                entities=scheduledYoutubeLink.entities,
+            )
+
+            print(f"{superGrpChatId} : {result.message_id}")
+            admin.sentMessages[superGrpChatId][
+                scheduledYoutubeLink.message_id
+            ] = result.message_id
+            print('Admin Sent Msgs:', admin.sentMessages)
 
         context.bot.sendMessage(
-            scheduledMsg.chat_id,
+            scheduledYoutubeLink.chat_id,
             text="Successfully Posted",
-            reply_to_message_id=result.message_id - 2,
+            reply_to_message_id=scheduledYoutubeLink.message_id,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
                     [
                         InlineKeyboardButton(
                             text="Delete",
-                            callback_data="delete",
+                            callback_data="Delete",
                         ),
-                        # InlineKeyboardButton(
-                        #     text="Edit",
-                        #     callback_data={"edit": scheduledMsg.message_id},
-                        # ),
                     ]
                 ]
             ),
         )
-    else:
 
+    else:
         job = context.job_queue.get_jobs_by_name(str(admin.chatId))[0]
         if job.enabled is True:
             job.enabled = False

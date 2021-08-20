@@ -8,7 +8,7 @@ DEFAULT_SCHEDULE_TIME: int = 6  # 24Hr Format
 
 CHANNELS: str = "channels"
 SUBSCRIBERS: str = "subscribers"
-SUPERGROUPS: str = "superGroups"
+SUPER_GROUPS: str = "superGroups"
 MESSAGES_POSTED: str = "messagesPosted"
 MESSAGES_SCHEDULED: str = "messagesScheduled"
 SCHEDULE_TIME: str = "scheduleTime"

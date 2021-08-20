@@ -98,10 +98,10 @@ class BotData:
                     -1001338453355,  # Private Test Channel
                     -1001428419658,  # Public Test Channel
                 ],
-                SUBSCRIBERS: [],
-                MESSAGESSCHEDULED: [],
-                MESSAGESPOSTED: {},
-                SCHEDULETIME: DEFAULTSCHEDULETIME,
+                # SUBSCRIBERS: [],
+                # MESSAGESSCHEDULED: [],
+                # MESSAGESPOSTED: {},
+                # SCHEDULETIME: DEFAULTSCHEDULETIME,
             },
         }
 
