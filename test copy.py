@@ -257,13 +257,25 @@
 
 myDict = {-1001410809020: {688: 77}}
 
-if any(k.__contains__(688) for k in myDict.values()):
-    print("Passed")
+# if any(k.__contains__(688) for k in myDict.values()):
+#     print("Passed")
 
-for k in myDict.values().__iter__():
-    print(k.__contains__(688))
-    print(type(k))
+# for k in myDict.values().__iter__():
+#     print(k.__contains__(688))
+#     print(type(k))
 
-for val in myDict.values():
-    print(val)
-    print(type(val))
+# for val in myDict.values():
+#     print(val)
+#     print(type(val))
+
+
+DOCUMENT_SCHEDULER: str = "documentScheduler"
+
+STRING = DOCUMENT_SCHEDULER + str(132456798)
+
+NEWSTR = STRING.removeprefix(DOCUMENT_SCHEDULER)
+
+print(STRING)
+print(NEWSTR)
+NEWSTR = int(NEWSTR)
+print(type(NEWSTR))

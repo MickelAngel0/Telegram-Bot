@@ -1,3 +1,5 @@
+from telegram.ext.jobqueue import Job
+from constants import TEXT_SCHEDULER
 import logging
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
@@ -23,7 +25,7 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
             admin.sentMessages[superGrpChatId][
                 scheduledYoutubeLink.message_id
             ] = result.message_id
-            print('Admin Sent Msgs:', admin.sentMessages)
+            print("Admin Sent Msgs:", admin.sentMessages)
 
         context.bot.sendMessage(
             scheduledYoutubeLink.chat_id,
@@ -41,7 +43,34 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
             ),
         )
 
+        if len(admin.scheduledYoutubeLinks) == 0:
+            print('Length of scheduled text is 0')
+            job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
+        
+            job.job.pause()
+            print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused")
+
     else:
-        job = context.job_queue.get_jobs_by_name(str(admin.chatId))[0]
-        if job.enabled is True:
-            job.enabled = False
+        print("Else Part")
+        job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
+        print(job)
+        print("Default Enabled Val:", job.enabled)
+
+        # job.enabled = ~job.enabled
+        # print("Inverted:", job.enabled)
+
+        # job.enabled = False
+        # print("Set to false:", job.enabled)
+
+        # job.enabled = True
+        # print("Set to true:", job.enabled)
+
+        # if job.enabled == True:
+        # job.enabled = False
+        job.job.pause()
+        print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Disabled")
+
+        print("After setting enable: ", job.enabled)
+        print("Else Part Complete")
+
+    # print("Remaining MSGS:", admin.scheduledYoutubeLinks)

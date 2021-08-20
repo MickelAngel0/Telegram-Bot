@@ -1,3 +1,4 @@
+from constants import IMAGE_SCHEDULER
 from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaPhoto
@@ -43,27 +44,20 @@ def recieveImage(update: Update, context: CallbackContext):
                         ],
                     )
 
-                    # context.bot.edit_message_caption(
-                    #     # media=InputMediaPhoto(update.message.photo[-1].file_id),
-                    #     caption=update.edited_message.caption,
-                    #     # text=update.effective_message.text,
-                    #     chat_id=superGrpChatId,
-                    #     message_id=admin.sentMessages[superGrpChatId][
-                    #         update.edited_message.message_id
-                    #     ],
-                    #     caption_entities=update.edited_message.caption_entities,
-                    # )
-
         else:
             chatId = update.effective_message.chat_id
+            job = context.job_queue.get_jobs_by_name(IMAGE_SCHEDULER + str(chatId))[0]
+
+            # if job.enabled == False:
+            #     job.enabled = True
+
             admin.scheduledImages.append(update.message)
+            logging.info(
+                f"Scheduled the Msg: {update.message.message_id}, {update.message.caption}"
+            )
 
-            logging.info(f"Scheduled the Msg: {update.message.message_id}")
-            job = context.job_queue.get_jobs_by_name(str(chatId))[0]
-
-            if job.enabled != True:
-                job.enabled = True
-
+            job.job.resume()
+            
             text = "Image successfully Scheduled!"
             update.message.reply_text(text)
 

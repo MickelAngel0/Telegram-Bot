@@ -16,6 +16,10 @@ SCHEDULE_TIME: str = "scheduleTime"
 
 MESSAGETYPETEXT: str = "text"
 
+TEXT_SCHEDULER: str = "textScheduler"
+IMAGE_SCHEDULER: str = "imageScheduler"
+DOCUMENT_SCHEDULER: str = "documentScheduler"
+
 # class MessageType:
 #     text: str = "text"
 #     document: str = "document"

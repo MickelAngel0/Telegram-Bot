@@ -1,3 +1,4 @@
+from constants import IMAGE_SCHEDULER
 from telegram.ext import CallbackContext
 import logging
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
@@ -41,41 +42,25 @@ def sendImage(context: CallbackContext):
             ),
         )
 
+        if len(admin.scheduledImages) == 0:
+            print("Length of scheduled text is 0")
+            job = context.job_queue.get_jobs_by_name(
+                IMAGE_SCHEDULER + str(admin.chatId)
+            )[0]
+
+            job.job.pause()
+            print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused")
+
     else:
-        job = context.job_queue.get_jobs_by_name(str(admin.chatId))[0]
-        if job.enabled is True:
-            job.enabled = False
+        print("Else Part")
 
-    # if update.edited_message:
-    #     # print("if part")
+        job = context.job_queue.get_jobs_by_name(IMAGE_SCHEDULER + str(admin.chatId))[0]
+        print(job)
+        print("Default Enabled Val:", job.enabled)
 
-    #     # Works
-    #     # context.bot.edit_message_caption(
-    #     #     # media=InputMediaPhoto(update.message.photo[-1].file_id),
-    #     #     caption=update.effective_message.caption,
-    #     #     # text=update.effective_message.text,
-    #     #     chat_id=update.effective_chat.id,
-    #     #     message_id=update.effective_message.message_id + 1,
-    #     #     caption_entities=update.effective_message.caption_entities,
-    #     # )
+        # if job.enabled == True:
+        #     job.enabled = False
+        #     print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + "Disabled")
 
-    #     context.bot.edit_message_media(
-    #         media=InputMediaPhoto(
-    #             media=update.effective_message.photo[-1].file_id,
-    #             caption=update.effective_message.caption,
-    #             caption_entities=update.effective_message.caption_entities,
-    #             # filename=update.edited_message.photo[-1],
-    #         ),
-    #         chat_id=update.effective_chat.id,
-    #         message_id=update.effective_message.message_id + 1,
-    #     )
-
-    #     # context.bot.editMessageCaption
-    # else:
-    #     context.bot.send_photo(
-    #         chat_id=update.effective_chat.id,
-    #         photo=update.effective_message.photo[-1].file_id,
-    #         caption=update.effective_message.caption,
-    #         # filename= update.message.photo[-1],
-    #         caption_entities=update.effective_message.caption_entities,
-    #     )
+        job.job.pause()
+        print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused")

@@ -1,3 +1,4 @@
+from constants import IMAGE_SCHEDULER, TEXT_SCHEDULER
 from Bot.sendTextOrEmoji import sendTextOrEmoji
 from Bot.sendImage import sendImage
 from telegram import Update
@@ -23,10 +24,13 @@ def setPostTimeText(update: Update, context: CallbackContext) -> None:
         admin.textPostTime = due
         admin.chatId = chatId
 
+        name = TEXT_SCHEDULER + str(chatId)
+
         job = context.job_queue.run_repeating(
-            sendTextOrEmoji, admin.textPostTime, name=str(chatId)
+            sendTextOrEmoji, admin.textPostTime, name=name
         )
-        job.enabled = False
+        # job.enabled = False
+        job.job.pause()
 
         text = "DueTime successfully set!"
         update.message.reply_text(text)
@@ -48,10 +52,10 @@ def setPostTimeImage(update: Update, context: CallbackContext) -> None:
         admin.imagePostTime = due
         admin.chatId = chatId
 
-        job = context.job_queue.run_repeating(
-            sendImage, admin.imagePostTime, name=str(chatId)
-        )
-        job.enabled = False
+        name = IMAGE_SCHEDULER + str(chatId)
+        job = context.job_queue.run_repeating(sendImage, admin.imagePostTime, name=name)
+        # job.enabled = False
+        job.job.pause()
 
         text = "DueTime successfully set!"
         update.message.reply_text(text)

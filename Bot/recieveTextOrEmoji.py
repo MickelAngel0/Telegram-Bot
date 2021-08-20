@@ -1,3 +1,4 @@
+from constants import TEXT_SCHEDULER
 import logging
 from telegram import Update
 from telegram.ext import CallbackContext
@@ -41,13 +42,20 @@ def recieveTextOrEmoji(update: Update, context: CallbackContext) -> None:
 
         else:
             chatId = update.effective_message.chat_id
+            # print("Jobs:", context.job_queue.jobs())
+
+            job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(chatId))[0]
+            print("Job:", job)
+
+            # if job.enabled != True:
+            # job.enabled = True
+
             admin.scheduledYoutubeLinks.append(update.message)
+            logging.info(
+                f"Scheduled the Msg : {update.message.message_id}, {update.message.text}"
+            )
 
-            logging.info(f"Scheduled the Msg : {update.message.message_id}")
-            job = context.job_queue.get_jobs_by_name(str(chatId))[0]
-
-            if job.enabled != True:
-                job.enabled = True
+            job.job.resume()
 
             text = "Text/Youtube Link successfully Scheduled!"
             update.message.reply_text(text)

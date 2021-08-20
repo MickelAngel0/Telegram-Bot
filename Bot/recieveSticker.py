@@ -6,7 +6,6 @@ import logging
 def recieveSticker(update: Update, context: CallbackContext):
     logging.info("RECIEVED STICKER:")
 
-
     update.message.reply_text(
         "Cannot handle this media at the point,\nPlease try again later."
     )
