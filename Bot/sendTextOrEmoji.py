@@ -1,9 +1,8 @@
-from telegram.ext.jobqueue import Job
 from constants import TEXT_SCHEDULER
 import logging
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
-from Bot import admin
+from Database import admin
 
 
 def sendTextOrEmoji(context: CallbackContext) -> None:
@@ -44,9 +43,11 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
         )
 
         if len(admin.scheduledYoutubeLinks) == 0:
-            print('Length of scheduled text is 0')
-            job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
-        
+            print("Length of scheduled text is 0")
+            job = context.job_queue.get_jobs_by_name(
+                TEXT_SCHEDULER + str(admin.chatId)
+            )[0]
+
             job.job.pause()
             print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused")
 

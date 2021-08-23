@@ -1,15 +1,11 @@
-from Models.Admin import Admin
 from constants import BOT_TOKEN
-from telegram.ext import Updater
+from telegram.ext import Updater, PicklePersistence
 from telegram.ext import MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 
 
-admin: Admin = Admin()
+botPersistance = PicklePersistence(filename="bot")
 
-admin.superGroups.append(-1001410809020)
-admin.sentMessages[-1001410809020] = {}
-
-updater = Updater(BOT_TOKEN)
+updater = Updater(BOT_TOKEN, persistence=botPersistance)
 dispatcher = updater.dispatcher
 jobQueue = updater.job_queue
 
@@ -34,9 +30,9 @@ from .recieveVideo import recieveVideo
 
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", start))
-dispatcher.add_handler(CommandHandler("text", setPostTimeText))
-dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
-dispatcher.add_handler(CommandHandler("reset", resetDailyPostTime))
+# dispatcher.add_handler(CommandHandler("text", setPostTimeText))
+# dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
+# dispatcher.add_handler(CommandHandler("reset", resetDailyPostTime))
 dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 
 dispatcher.add_handler(MessageHandler(Filters.text, recieveTextOrEmoji))

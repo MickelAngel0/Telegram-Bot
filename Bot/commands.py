@@ -3,7 +3,7 @@ from Bot.sendTextOrEmoji import sendTextOrEmoji
 from Bot.sendImage import sendImage
 from telegram import Update
 from telegram.ext import CallbackContext
-from Bot import admin
+from Database import admin
 
 
 def start(update: Update, context: CallbackContext) -> None:
