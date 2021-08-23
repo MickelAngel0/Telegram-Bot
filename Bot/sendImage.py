@@ -59,6 +59,8 @@ def sendImage(context: CallbackContext):
                 + " Paused\nPlease Schedule more Images",
             )
 
+        admin.writeToFile()
+
     else:
         print("Else Part")
 

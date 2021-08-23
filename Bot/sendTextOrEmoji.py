@@ -59,9 +59,12 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
                 + " Paused\nPlease Schedule more Links",
             )
 
+        admin.writeToFile()
+
     else:
         print("Else Part")
         job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
         print(job)
+        
         job.job.pause()
         print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Disabled")

@@ -7,14 +7,28 @@ from constants import (
 )
 import telegram
 import pickle
-import os
 import json
-from Bot import updater
 
 
 class Admin:
     def __init__(self) -> None:
-        self.readFromFile()
+        # 132465798
+        self.chatId = None
+
+        # [Message,Message]
+        self.scheduledImages: list[telegram.Message] = []
+        # [Message,Message]
+        self.scheduledYoutubeLinks: list[telegram.Message] = []
+
+        # {"-10013246578" : {123 : 465, 1324 : 465}}
+        self.sentMessages: dict[int, dict[int, int]] = {}
+        # True | False
+        self.sendImageIfVideoListEmpty: bool = True
+
+        # [-10078946512, -10045678913]
+        self.superGroups: set[int] = set()
+        self.superGroups.add(-1001410809020)
+        self.sentMessages[str(-1001410809020)] = {}
 
     def writeToFile(self):
         self._db: dict = {
@@ -31,53 +45,53 @@ class Admin:
             pickle.dump(json.dumps(self._db), dataFile)
             print("Done Writing to file")
 
-    def readFromFile(self):
-        # Reading the Data
-        # print("PATH: ", os.path)
+    # def readFromFile(self):
+    #     # Reading the Data
+    #     # print("PATH: ", os.path)
 
-        if os.path.isfile(ADMIN_DATA_FILENAME):
+    #     if os.path.isfile(ADMIN_DATA_FILENAME):
 
-            with open(ADMIN_DATA_FILENAME, "rb") as dataFile:
-                self._db = {}
-                self._db = json.loads(pickle.load(dataFile))
-                print("Done reading data from file")
+    #         with open(ADMIN_DATA_FILENAME, "rb") as dataFile:
+    #             self._db = {}
+    #             self._db = json.loads(pickle.load(dataFile))
+    #             print("Done reading data from file")
 
-                print(self._db)
+    #             print(self._db)
 
-            self.chatId = self._db["chatId"]
-            self.scheduledImages = [
-                telegram.Message.de_json(msg, bot=updater.bot)
-                for msg in self._db[SCHEDULED_IMAGES]
-            ]
-            self.scheduledYoutubeLinks = [
-                telegram.Message.de_json(msg, bot=updater.bot)
-                for msg in self._db[SCHEDULED_TEXT]
-            ]
+    #         self.chatId = self._db["chatId"]
+    #         self.scheduledImages = [
+    #             telegram.Message.de_json(msg, bot=updater.bot)
+    #             for msg in self._db[SCHEDULED_IMAGES]
+    #         ]
+    #         self.scheduledYoutubeLinks = [
+    #             telegram.Message.de_json(msg, bot=updater.bot)
+    #             for msg in self._db[SCHEDULED_TEXT]
+    #         ]
 
-            self.sentMessages = self._db[SENT_MESSAGES]
-            self.sendImageIfVideoListEmpty = self._db["sendImageIfVideoListEmpty"]
-            self.superGroups = set(self._db[SUPER_GROUPS])
+    #         self.sentMessages = self._db[SENT_MESSAGES]
+    #         self.sendImageIfVideoListEmpty = self._db["sendImageIfVideoListEmpty"]
+    #         self.superGroups = set(self._db[SUPER_GROUPS])
 
-            print(self.sentMessages, type(self.sentMessages))
-            # print(self.superGroups)
+    #         print(self.sentMessages, type(self.sentMessages))
+    #         # print(self.superGroups)
 
-            print("File read successfully")
-            return
+    #         print("File read successfully")
+    #         return
 
-        # 132465798
-        self.chatId = None
+    #     # 132465798
+    #     self.chatId = None
 
-        # [Message,Message]
-        self.scheduledImages: list[telegram.Message] = []
-        # [Message,Message]
-        self.scheduledYoutubeLinks: list[telegram.Message] = []
+    #     # [Message,Message]
+    #     self.scheduledImages: list[telegram.Message] = []
+    #     # [Message,Message]
+    #     self.scheduledYoutubeLinks: list[telegram.Message] = []
 
-        # {"-10013246578" : {123 : 465, 1324 : 465}}
-        self.sentMessages: dict[str, dict[str, int]] = {}
-        # True | False
-        self.sendImageIfVideoListEmpty: bool = True
+    #     # {"-10013246578" : {123 : 465, 1324 : 465}}
+    #     self.sentMessages: dict[str, dict[str, int]] = {}
+    #     # True | False
+    #     self.sendImageIfVideoListEmpty: bool = True
 
-        # [-10078946512, -10045678913]
-        self.superGroups: set[int] = set()
-        self.superGroups.add(-1001410809020)
-        self.sentMessages[str(-1001410809020)] = {}
+    #     # [-10078946512, -10045678913]
+    #     self.superGroups: set[int] = set()
+    #     self.superGroups.add(-1001410809020)
+    #     self.sentMessages[str(-1001410809020)] = {}

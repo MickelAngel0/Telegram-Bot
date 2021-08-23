@@ -1,11 +1,9 @@
 from constants import BOT_TOKEN
-from telegram.ext import Updater, PicklePersistence
+from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 
 
-botPersistance = PicklePersistence(filename="bot")
-
-updater = Updater(BOT_TOKEN, persistence=botPersistance)
+updater = Updater(BOT_TOKEN)
 dispatcher = updater.dispatcher
 jobQueue = updater.job_queue
 
@@ -24,6 +22,8 @@ dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", start))
 dispatcher.add_handler(CommandHandler("text", setPostTimeText))
 dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
+dispatcher.add_handler(CommandHandler("resetText", resetTextPostTime))
+dispatcher.add_handler(CommandHandler("resetImage", resetImagePostTime))
 dispatcher.add_handler(CommandHandler("resetAll", resetDailyPostTime))
 dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 

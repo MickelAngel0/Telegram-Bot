@@ -44,14 +44,9 @@ def recieveImage(update: Update, context: CallbackContext):
                         ],
                     )
 
-            admin.writeToFile()
-
         else:
             chatId = update.effective_message.chat_id
             job = context.job_queue.get_jobs_by_name(IMAGE_SCHEDULER + str(chatId))[0]
-
-            # if job.enabled == False:
-            #     job.enabled = True
 
             admin.scheduledImages.append(update.message)
             logging.info(
@@ -60,10 +55,10 @@ def recieveImage(update: Update, context: CallbackContext):
 
             job.job.resume()
 
-            text = f"Successfully Scheduled!\nScheduled Posts: {len(admin.scheduledImages)}"
+            text = f"Successfully Scheduled!\nScheduled Images: {len(admin.scheduledImages)}"
             update.message.reply_text(text)
 
-            admin.writeToFile()
+        admin.writeToFile()
 
     except (IndexError, ValueError):
         update.message.reply_text("No Job present, Please set time first")

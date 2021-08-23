@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from time import time
+from datetime import timedelta
 import telegram
 from telegram.bot import Bot
 from telegram.utils.types import JSONDict
