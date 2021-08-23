@@ -28,7 +28,7 @@ def sendImage(context: CallbackContext):
 
         context.bot.sendMessage(
             chat_id=scheduledImage.chat_id,
-            text="Successfully Posted",
+            text=f"Successfully Sent!\nRemaining Posts: {len(admin.scheduledImages)}",
             reply_to_message_id=scheduledImage.message_id,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -51,16 +51,19 @@ def sendImage(context: CallbackContext):
             job.job.pause()
             print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused")
 
+            context.bot.sendMessage(
+                scheduledImage.chat_id,
+                text="Job: "
+                + IMAGE_SCHEDULER
+                + str(admin.chatId)
+                + " Paused\nPlease Schedule more Images",
+            )
+
     else:
         print("Else Part")
 
         job = context.job_queue.get_jobs_by_name(IMAGE_SCHEDULER + str(admin.chatId))[0]
         print(job)
-        print("Default Enabled Val:", job.enabled)
-
-        # if job.enabled == True:
-        #     job.enabled = False
-        #     print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + "Disabled")
 
         job.job.pause()
         print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused")

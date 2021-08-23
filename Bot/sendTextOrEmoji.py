@@ -29,7 +29,7 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
 
         context.bot.sendMessage(
             scheduledYoutubeLink.chat_id,
-            text="Successfully Posted",
+            text=f"Successfully Sent!\nRemaining Posts: {len(admin.scheduledYoutubeLinks)}",
             reply_to_message_id=scheduledYoutubeLink.message_id,
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
@@ -44,33 +44,25 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
         )
 
         if len(admin.scheduledYoutubeLinks) == 0:
-            print('Length of scheduled text is 0')
-            job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
-        
+            print("Length of scheduled text is 0")
+            job = context.job_queue.get_jobs_by_name(
+                TEXT_SCHEDULER + str(admin.chatId)
+            )[0]
+
             job.job.pause()
             print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused")
+
+            context.bot.sendMessage(
+                scheduledYoutubeLink.chat_id,
+                text="Job: "
+                + TEXT_SCHEDULER
+                + str(admin.chatId)
+                + " Paused\nPlease Schedule more Links",
+            )
 
     else:
         print("Else Part")
         job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
         print(job)
-        print("Default Enabled Val:", job.enabled)
-
-        # job.enabled = ~job.enabled
-        # print("Inverted:", job.enabled)
-
-        # job.enabled = False
-        # print("Set to false:", job.enabled)
-
-        # job.enabled = True
-        # print("Set to true:", job.enabled)
-
-        # if job.enabled == True:
-        # job.enabled = False
         job.job.pause()
         print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Disabled")
-
-        print("After setting enable: ", job.enabled)
-        print("Else Part Complete")
-
-    # print("Remaining MSGS:", admin.scheduledYoutubeLinks)

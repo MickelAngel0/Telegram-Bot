@@ -24,19 +24,11 @@ from .recieveTextOrEmoji import recieveTextOrEmoji
 from .recieveVideo import recieveVideo
 
 
-# dispatcher.add_handler(
-#     MessageHandler(Filters.chat_type.channel | Filters.chat_type.supergroup, ())
-# )
-
-
-# jobQueue.run_repeating(periodic, interval=10, first=10)
-# jobQueue.run_daily(periodic, datetime.utcnow())
-
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", start))
 dispatcher.add_handler(CommandHandler("text", setPostTimeText))
 dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
-dispatcher.add_handler(CommandHandler("reset", resetDailyPostTime))
+dispatcher.add_handler(CommandHandler("resetAll", resetDailyPostTime))
 dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 
 dispatcher.add_handler(MessageHandler(Filters.text, recieveTextOrEmoji))

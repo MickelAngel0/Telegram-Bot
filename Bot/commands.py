@@ -8,7 +8,10 @@ from Bot import admin
 
 def start(update: Update, context: CallbackContext) -> None:
     """Sends explanation on how to use the bot."""
-    update.message.reply_text("Hi! Use /set <seconds> to set a timer")
+    update.message.reply_text(
+        "Hi!\nUse /image <seconds> to set a timer for Images"
+        + "\nUse /text <seconds> to set a timer for Text/Links"
+    )
 
 
 def setPostTimeText(update: Update, context: CallbackContext) -> None:
@@ -32,11 +35,11 @@ def setPostTimeText(update: Update, context: CallbackContext) -> None:
         # job.enabled = False
         job.job.pause()
 
-        text = "DueTime successfully set!"
+        text = "Post time successfully set!"
         update.message.reply_text(text)
 
     except (IndexError, ValueError):
-        update.message.reply_text("Usage: /set <seconds>")
+        update.message.reply_text("Usage: /text <seconds>")
 
 
 def setPostTimeImage(update: Update, context: CallbackContext) -> None:
@@ -57,11 +60,11 @@ def setPostTimeImage(update: Update, context: CallbackContext) -> None:
         # job.enabled = False
         job.job.pause()
 
-        text = "DueTime successfully set!"
+        text = "Post time successfully set!"
         update.message.reply_text(text)
 
     except (IndexError, ValueError):
-        update.message.reply_text("Usage: /set <seconds>")
+        update.message.reply_text("Usage: /image <seconds>")
 
 
 def resetDailyPostTime(update: Update, context: CallbackContext) -> None:
@@ -74,14 +77,38 @@ def resetDailyPostTime(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(text)
 
 
-# def removeJobIfExists(name: str, context: CallbackContext) -> bool:
-#     """Remove job with given name. Returns whether job was removed."""
-#     current_jobs = context.job_queue.get_jobs_by_name(name)
-#     if not current_jobs:
-#         return False
-#     for job in current_jobs:
-#         job.schedule_removal()
-#     return True
+def resetTextPostTime(update: Update, context: CallbackContext) -> None:
+    """Remove the job if the user changed their mind."""
+    chatId = update.message.chat_id
+    jobRemoved = removeJobIfExists(TEXT_SCHEDULER + str(chatId), context)
+    text = (
+        "Text Timer successfully cancelled!"
+        if jobRemoved
+        else "You have no active Text Post Job."
+    )
+    update.message.reply_text(text)
+
+
+def resetImagePostTime(update: Update, context: CallbackContext) -> None:
+    """Remove the job if the user changed their mind."""
+    chatId = update.message.chat_id
+    jobRemoved = removeJobIfExists(IMAGE_SCHEDULER + str(chatId), context)
+    text = (
+        "Image Timer successfully cancelled!"
+        if jobRemoved
+        else "You have no active Image Post Job."
+    )
+    update.message.reply_text(text)
+
+
+def removeJobIfExists(name: str, context: CallbackContext) -> bool:
+    """Remove job with given name. Returns whether job was removed."""
+    current_jobs = context.job_queue.get_jobs_by_name(name)
+    if not current_jobs:
+        return False
+    for job in current_jobs:
+        job.schedule_removal()
+    return True
 
 
 def removeAllJobs(context: CallbackContext) -> bool:

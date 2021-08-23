@@ -57,8 +57,8 @@ def recieveImage(update: Update, context: CallbackContext):
             )
 
             job.job.resume()
-            
-            text = "Image successfully Scheduled!"
+
+            text = f"Successfully Scheduled!\nScheduled Posts: {len(admin.scheduledImages)}"
             update.message.reply_text(text)
 
     except (IndexError, ValueError):

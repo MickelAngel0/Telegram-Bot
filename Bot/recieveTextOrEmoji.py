@@ -42,13 +42,9 @@ def recieveTextOrEmoji(update: Update, context: CallbackContext) -> None:
 
         else:
             chatId = update.effective_message.chat_id
-            # print("Jobs:", context.job_queue.jobs())
 
             job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(chatId))[0]
             print("Job:", job)
-
-            # if job.enabled != True:
-            # job.enabled = True
 
             admin.scheduledYoutubeLinks.append(update.message)
             logging.info(
@@ -57,7 +53,7 @@ def recieveTextOrEmoji(update: Update, context: CallbackContext) -> None:
 
             job.job.resume()
 
-            text = "Text/Youtube Link successfully Scheduled!"
+            text = f"Successfully Scheduled!\nScheduled Posts: {len(admin.scheduledYoutubeLinks)}"
             update.message.reply_text(text)
 
     except (IndexError, ValueError):
