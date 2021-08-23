@@ -1,15 +1,11 @@
-from Models.Admin import Admin
 from constants import BOT_TOKEN
-from telegram.ext import Updater
+from telegram.ext import Updater, PicklePersistence
 from telegram.ext import MessageHandler, Filters, CommandHandler, CallbackQueryHandler
 
 
-admin: Admin = Admin()
+botPersistance = PicklePersistence(filename="bot")
 
-admin.superGroups.append(-1001410809020)
-admin.sentMessages[-1001410809020] = {}
-
-updater = Updater(BOT_TOKEN)
+updater = Updater(BOT_TOKEN, persistence=botPersistance)
 dispatcher = updater.dispatcher
 jobQueue = updater.job_queue
 

@@ -1,9 +1,8 @@
-from telegram.ext.jobqueue import Job
 from constants import TEXT_SCHEDULER
 import logging
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
-from Bot import admin
+from Database import admin
 
 
 def sendTextOrEmoji(context: CallbackContext) -> None:

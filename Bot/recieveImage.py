@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from telegram.files.inputmedia import InputMediaPhoto
 import logging
-from Bot import admin
+from Database import admin
 
 
 def recieveImage(update: Update, context: CallbackContext):
@@ -44,6 +44,8 @@ def recieveImage(update: Update, context: CallbackContext):
                         ],
                     )
 
+            admin.writeToFile()
+
         else:
             chatId = update.effective_message.chat_id
             job = context.job_queue.get_jobs_by_name(IMAGE_SCHEDULER + str(chatId))[0]
@@ -60,6 +62,8 @@ def recieveImage(update: Update, context: CallbackContext):
 
             text = f"Successfully Scheduled!\nScheduled Posts: {len(admin.scheduledImages)}"
             update.message.reply_text(text)
+
+            admin.writeToFile()
 
     except (IndexError, ValueError):
         update.message.reply_text("No Job present, Please set time first")

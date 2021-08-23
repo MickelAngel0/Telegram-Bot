@@ -2,7 +2,7 @@ BOT_TOKEN: str = "1856554532:AAHYWw0buQOHThRf4XB2l54YTqmc5TWeJgk"
 
 # class AdminData:
 
-BOTDATA_FILENAME: str = "botData.pickle"
+ADMIN_DATA_FILENAME: str = "adminData"
 
 DEFAULT_SCHEDULE_TIME: int = 6  # 24Hr Format
 
@@ -21,6 +21,9 @@ IMAGE_SCHEDULER: str = "imageScheduler"
 DOCUMENT_SCHEDULER: str = "documentScheduler"
 
 
+SENT_MESSAGES: str = "sentMessages"
+SCHEDULED_IMAGES: str = "scheduledImages"
+SCHEDULED_TEXT: str = "scheduledText"
 
 # class MessageType:
 #     text: str = "text"

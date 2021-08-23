@@ -2,7 +2,7 @@ from constants import IMAGE_SCHEDULER
 from telegram.ext import CallbackContext
 import logging
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
-from Bot import admin
+from Database import admin
 
 
 def sendImage(context: CallbackContext):
