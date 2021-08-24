@@ -10,7 +10,6 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
 
     if len(admin.scheduledYoutubeLinks) != 0:
         scheduledYoutubeLink = admin.scheduledYoutubeLinks.pop(0)
-
         logging.info("SuperGrps:")
 
         for superGrpChatId in admin.superGroups:
@@ -49,15 +48,10 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
             )[0]
 
             job.job.pause()
-            print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused")
+            text = "Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused"
 
-            context.bot.sendMessage(
-                scheduledYoutubeLink.chat_id,
-                text="Job: "
-                + TEXT_SCHEDULER
-                + str(admin.chatId)
-                + " Paused\nPlease Schedule more Links",
-            )
+            print(text)
+            context.bot.sendMessage(scheduledYoutubeLink.chat_id, text=text)
 
         admin.writeToFile()
 
@@ -65,6 +59,6 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
         print("Else Part")
         job = context.job_queue.get_jobs_by_name(TEXT_SCHEDULER + str(admin.chatId))[0]
         print(job)
-        
+
         job.job.pause()
-        print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Disabled")
+        print("Job: " + TEXT_SCHEDULER + str(admin.chatId) + " Paused")

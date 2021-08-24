@@ -10,7 +10,6 @@ def sendImage(context: CallbackContext):
 
     if len(admin.scheduledImages) != 0:
         scheduledImage = admin.scheduledImages.pop(0)
-
         logging.info("SuperGrps:")
 
         for superGrpChatId in admin.superGroups:
@@ -49,15 +48,10 @@ def sendImage(context: CallbackContext):
             )[0]
 
             job.job.pause()
-            print("Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused")
-
-            context.bot.sendMessage(
-                scheduledImage.chat_id,
-                text="Job: "
-                + IMAGE_SCHEDULER
-                + str(admin.chatId)
-                + " Paused\nPlease Schedule more Images",
-            )
+            text = "Job: " + IMAGE_SCHEDULER + str(admin.chatId) + " Paused"
+            
+            print(text)
+            context.bot.sendMessage(scheduledImage.chat_id, text=text)
 
         admin.writeToFile()
 

@@ -13,8 +13,8 @@ def recieveTextOrEmoji(update: Update, context: CallbackContext) -> None:
             print("It is a Edited Msg")
 
             if any(
-                item.message_id == update.edited_message.message_id
-                for item in admin.scheduledYoutubeLinks
+                schMsg.message_id == update.edited_message.message_id
+                for schMsg in admin.scheduledYoutubeLinks
             ):
                 print("Present in Scheduled Msgs")
 

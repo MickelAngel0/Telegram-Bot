@@ -1,6 +1,6 @@
 from telegram import Update
 from telegram.ext import CallbackContext
-from telegram.files.inputmedia import InputMediaAudio
+# from telegram.files.inputmedia import InputMediaAudio
 import logging
 
 

@@ -20,15 +20,15 @@ class Admin:
         # [Message,Message]
         self.scheduledYoutubeLinks: list[telegram.Message] = []
 
-        # {"-10013246578" : {123 : 465, 1324 : 465}}
+        # {-10013246578 : {123 : 465, 1324 : 465}}
         self.sentMessages: dict[int, dict[int, int]] = {}
         # True | False
         self.sendImageIfVideoListEmpty: bool = True
 
-        # [-10078946512, -10045678913]
+        # set(-10078946512, -10045678913)
         self.superGroups: set[int] = set()
         self.superGroups.add(-1001410809020)
-        self.sentMessages[str(-1001410809020)] = {}
+        self.sentMessages[-1001410809020] = {}
 
     def writeToFile(self):
         self._db: dict = {
@@ -43,7 +43,7 @@ class Admin:
         # Writing the Data
         with open(ADMIN_DATA_FILENAME, "wb") as dataFile:
             pickle.dump(json.dumps(self._db), dataFile)
-            print("Done Writing to file")
+            print("Data Written to file")
 
     # def readFromFile(self):
     #     # Reading the Data

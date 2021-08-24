@@ -8,13 +8,18 @@ from Database import admin
 
 def start(update: Update, context: CallbackContext) -> None:
     """Sends explanation on how to use the bot."""
+
+    admin.chatId = update.message.chat_id
+
     update.message.reply_text(
-        "Hi!\nUse /image <seconds> to set a timer for Images"
+        "Hi!"
+        + "ChatId Successfully Set"
+        + "\nUse /image <seconds> to set a timer for Images"
         + "\nUse /text <seconds> to set a timer for Text/Links"
     )
 
 
-def setPostTimeText(update: Update, context: CallbackContext) -> None:
+def setTextPostTime(update: Update, context: CallbackContext) -> None:
     """Add a job to the queue."""
     chatId = update.message.chat_id
 
@@ -25,8 +30,6 @@ def setPostTimeText(update: Update, context: CallbackContext) -> None:
             return
 
         admin.textPostTime = due
-        admin.chatId = chatId
-
         name = TEXT_SCHEDULER + str(chatId)
 
         job = context.job_queue.run_repeating(
@@ -42,7 +45,7 @@ def setPostTimeText(update: Update, context: CallbackContext) -> None:
         update.message.reply_text("Usage: /text <seconds>")
 
 
-def setPostTimeImage(update: Update, context: CallbackContext) -> None:
+def setImagePostTime(update: Update, context: CallbackContext) -> None:
     """Add a job to the queue."""
     chatId = update.message.chat_id
 
@@ -53,7 +56,6 @@ def setPostTimeImage(update: Update, context: CallbackContext) -> None:
             return
 
         admin.imagePostTime = due
-        admin.chatId = chatId
 
         name = IMAGE_SCHEDULER + str(chatId)
         job = context.job_queue.run_repeating(sendImage, admin.imagePostTime, name=name)

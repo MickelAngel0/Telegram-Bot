@@ -1,17 +1,14 @@
 BOT_TOKEN: str = "1856554532:AAHYWw0buQOHThRf4XB2l54YTqmc5TWeJgk"
 
+
 ADMIN_DATA_FILENAME: str = "adminData"
 
 
 CHANNELS: str = "channels"
 SUBSCRIBERS: str = "subscribers"
 SUPER_GROUPS: str = "superGroups"
-MESSAGES_POSTED: str = "messagesPosted"
-MESSAGES_SCHEDULED: str = "messagesScheduled"
 SCHEDULE_TIME: str = "scheduleTime"
 
-
-MESSAGETYPETEXT: str = "text"
 
 TEXT_SCHEDULER: str = "textScheduler"
 IMAGE_SCHEDULER: str = "imageScheduler"

@@ -14,8 +14,8 @@ def recieveImage(update: Update, context: CallbackContext):
             print("It is a Edited Image/Caption")
 
             if any(
-                item.message_id == update.edited_message.message_id
-                for item in admin.scheduledImages
+                schImg.message_id == update.edited_message.message_id
+                for schImg in admin.scheduledImages
             ):
                 print("Present in Scheduled Msgs")
 

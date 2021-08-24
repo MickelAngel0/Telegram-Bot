@@ -20,8 +20,8 @@ from .recieveVideo import recieveVideo
 
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", start))
-dispatcher.add_handler(CommandHandler("text", setPostTimeText))
-dispatcher.add_handler(CommandHandler("image", setPostTimeImage))
+dispatcher.add_handler(CommandHandler("text", setTextPostTime))
+dispatcher.add_handler(CommandHandler("image", setImagePostTime))
 dispatcher.add_handler(CommandHandler("resetText", resetTextPostTime))
 dispatcher.add_handler(CommandHandler("resetImage", resetImagePostTime))
 dispatcher.add_handler(CommandHandler("resetAll", resetDailyPostTime))
