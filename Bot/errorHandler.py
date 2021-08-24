@@ -1,8 +1,6 @@
-from constants import TEXT_SCHEDULER
 import logging
 from telegram import Update
 from telegram.ext import CallbackContext
-from Database import admin
 
 
 def errorHandler(update: Update, context: CallbackContext) -> None:
