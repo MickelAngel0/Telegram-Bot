@@ -1,9 +1,11 @@
+from datetime import time
 from constants import IMAGE_SCHEDULER, TEXT_SCHEDULER
 from Bot.sendTextOrEmoji import sendTextOrEmoji
 from Bot.sendImage import sendImage
 from telegram import Update
 from telegram.ext import CallbackContext
 from Database import admin
+import pytz
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -24,19 +26,32 @@ def setTextPostTime(update: Update, context: CallbackContext) -> None:
     chatId = update.message.chat_id
 
     try:
-        due = int(context.args[0])
-        if due < 0:
+        print(f"Args: {context.args}")
+
+        hour, minute = None, None
+
+        if len(context.args) == 2:
+            hour = int(context.args[0])
+            minute = int(context.args[1])
+
+        else:
+            hour = int(context.args[0])
+            minute = 0
+
+        if hour < 0 or minute < 0:
             update.message.reply_text("Sorry we can not go back to future!")
             return
 
-        admin.textPostTime = due
-        admin.chatId = chatId
+        admin.textPostHour = hour
+        admin.textPostMinute = minute
 
+        admin.chatId = chatId
         name = TEXT_SCHEDULER + str(chatId)
 
-        job = context.job_queue.run_repeating(
-            sendTextOrEmoji, admin.textPostTime, name=name
-        )
+        timeToSet = time(hour=hour, minute=minute, tzinfo=pytz.timezone("Asia/Kolkata"))
+        print(f"Time Set: {timeToSet}, {timeToSet.tzinfo}, {timeToSet.tzname()}")
+
+        job = context.job_queue.run_daily(sendTextOrEmoji, time=timeToSet, name=name)
         # job.enabled = False
         job.job.pause()
 
@@ -44,7 +59,7 @@ def setTextPostTime(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(text)
 
     except (IndexError, ValueError):
-        update.message.reply_text("Usage: /text <seconds>")
+        update.message.reply_text("Usage: /text <Hour> <Minute> (in 24Hr Format)")
 
 
 def setImagePostTime(update: Update, context: CallbackContext) -> None:
@@ -52,16 +67,30 @@ def setImagePostTime(update: Update, context: CallbackContext) -> None:
     chatId = update.message.chat_id
 
     try:
-        due = int(context.args[0])
-        if due < 0:
+        hour, minute = None, None
+
+        if len(context.args) == 2:
+            hour = int(context.args[0])
+            minute = int(context.args[1])
+
+        else:
+            hour = int(context.args[0])
+            minute = 0
+
+        if hour < 0 or minute < 0:
             update.message.reply_text("Sorry we can not go back to future!")
             return
 
-        admin.imagePostTime = due
-        admin.chatId = chatId
+        admin.imagePostHour = hour
+        admin.imagePostMinute = minute
 
+        admin.chatId = chatId
         name = IMAGE_SCHEDULER + str(chatId)
-        job = context.job_queue.run_repeating(sendImage, admin.imagePostTime, name=name)
+
+        timeToSet = time(hour=hour, minute=minute, tzinfo=pytz.timezone("Asia/Kolkata"))
+        print(f"Time Set: {timeToSet}, {timeToSet.tzinfo}, {timeToSet.tzname()}")
+
+        job = context.job_queue.run_daily(sendImage, time=timeToSet, name=name)
         # job.enabled = False
         job.job.pause()
 
@@ -69,7 +98,7 @@ def setImagePostTime(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(text)
 
     except (IndexError, ValueError):
-        update.message.reply_text("Usage: /image <seconds>")
+        update.message.reply_text("Usage: /image <Hour> <Minute> (in 24Hr Format)")
 
 
 def resetDailyPostTime(update: Update, context: CallbackContext) -> None:

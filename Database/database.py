@@ -25,6 +25,16 @@ class Admin:
         # True | False
         self.sendImageIfVideoListEmpty: bool = True
 
+        # In hours
+        self.textPostHour: int = 6
+        # In minutes
+        self.textPostMinute: int = 00
+
+        # In hours
+        self.imagePostHour: int = 18
+        # In minutes
+        self.imagePostMinute: int = 00
+
         # set(-10078946512, -10045678913)
         self.superGroups: set[int] = set()
         self.superGroups.add(-1001410809020)
@@ -36,6 +46,10 @@ class Admin:
             SCHEDULED_IMAGES: [msg.to_dict() for msg in self.scheduledImages],
             SCHEDULED_TEXT: [msg.to_dict() for msg in self.scheduledYoutubeLinks],
             "chatId": self.chatId,
+            "textPostHour": self.textPostHour,
+            "textPostMinute": self.textPostMinute,
+            "imagePostHour": self.imagePostHour,
+            "imagePostMinute": self.imagePostMinute,
             SUPER_GROUPS: list(self.superGroups),
             "sendImageIfVideoListEmpty": self.sendImageIfVideoListEmpty,
         }
