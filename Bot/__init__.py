@@ -8,6 +8,7 @@ dispatcher = updater.dispatcher
 jobQueue = updater.job_queue
 
 from .commands import *
+from .errorHandler import errorHandler
 from .callbackQuery import callbackQuery
 from .recieveAnimationOrGif import recieveAnimationOrGif
 from .recieveAudio import recieveAudio
@@ -27,11 +28,30 @@ dispatcher.add_handler(CommandHandler("resetImage", resetImagePostTime))
 dispatcher.add_handler(CommandHandler("resetAll", resetDailyPostTime))
 dispatcher.add_handler(CallbackQueryHandler(callbackQuery))
 
-dispatcher.add_handler(MessageHandler(Filters.text, recieveTextOrEmoji))
-dispatcher.add_handler(MessageHandler(Filters.photo, recieveImage))
-dispatcher.add_handler(MessageHandler(Filters.video, recieveVideo))
-dispatcher.add_handler(MessageHandler(Filters.audio, recieveAudio))
-dispatcher.add_handler(MessageHandler(Filters.sticker, recieveSticker))
-dispatcher.add_handler(MessageHandler(Filters.animation, recieveAnimationOrGif))
+dispatcher.add_handler(
+    MessageHandler(Filters.text & Filters.chat(1530597878), recieveTextOrEmoji)
+)
+dispatcher.add_handler(
+    MessageHandler(Filters.photo & Filters.chat(1530597878), recieveImage)
+)
+dispatcher.add_handler(
+    MessageHandler(
+        Filters.video & Filters.chat_type.private,
+        recieveVideo,
+    )
+)
+dispatcher.add_handler(
+    MessageHandler(Filters.audio & Filters.chat_type.private, recieveAudio)
+)
+dispatcher.add_handler(
+    MessageHandler(Filters.sticker & Filters.chat_type.private, recieveSticker)
+)
+dispatcher.add_handler(
+    MessageHandler(Filters.animation & Filters.chat_type.private, recieveAnimationOrGif)
+)
+dispatcher.add_handler(
+    MessageHandler(Filters.document & Filters.chat_type.private, recieveDocument)
+)
 # dispatcher.add_handler(MessageHandler(Filters.poll, poll))
-dispatcher.add_handler(MessageHandler(Filters.document, recieveDocument))
+
+dispatcher.add_error_handler(errorHandler)

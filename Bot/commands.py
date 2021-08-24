@@ -30,6 +30,8 @@ def setTextPostTime(update: Update, context: CallbackContext) -> None:
             return
 
         admin.textPostTime = due
+        admin.chatId = chatId
+
         name = TEXT_SCHEDULER + str(chatId)
 
         job = context.job_queue.run_repeating(
@@ -56,6 +58,7 @@ def setImagePostTime(update: Update, context: CallbackContext) -> None:
             return
 
         admin.imagePostTime = due
+        admin.chatId = chatId
 
         name = IMAGE_SCHEDULER + str(chatId)
         job = context.job_queue.run_repeating(sendImage, admin.imagePostTime, name=name)

@@ -25,6 +25,22 @@ def sendTextOrEmoji(context: CallbackContext) -> None:
             ] = result.message_id
             print("Admin Sent Msgs:", admin.sentMessages)
 
+            # context.bot.forward_message(
+            #     chat_id=scheduledYoutubeLink.chat_id,
+            #     from_chat_id=superGrpChatId,
+            #     message_id=result.message_id,
+            #     # reply_markup=InlineKeyboardMarkup(
+            #     #     inline_keyboard=[
+            #     #         [
+            #     #             InlineKeyboardButton(
+            #     #                 text="Delete Post",
+            #     #                 callback_data="Delete",
+            #     #             ),
+            #     #         ]
+            #     #     ]
+            #     # ),
+            # )
+
         context.bot.sendMessage(
             scheduledYoutubeLink.chat_id,
             text=f"Successfully Sent!\nRemaining Posts: {len(admin.scheduledYoutubeLinks)}",
